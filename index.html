@@ -390,3 +390,14 @@ async function renderTable() {
         </tr>
     `).join('');
 }
+
+async function saveSession(e) {
+    e.preventDefault();
+    const did = parseInt(document.getElementById('selDoc').value);
+    if(!did) return alert('Выберите врача');
+    const data = { doctorId: did, date: document.getElementById('sDate').value, time: document.getElementById('sTime').value, patient: document.getElementById('sPatient').value, type: document.getElementById('sType').value, comment: document.getElementById('sComment').value };
+    if(editId) await API_CALL.updateAppointment(editId, data);
+    else await API_CALL.createAppointment(data);
+    document.getElementById('selDate').value = data.date;
+    resetForm(); renderTable();
+}
