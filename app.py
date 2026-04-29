@@ -173,3 +173,9 @@ def delete_appointment(id):
     conn.close()
     return jsonify({'success': True})
 
+@app.route('/api/admin/doctors', methods=['GET'])
+def admin_get_doctors():
+    conn = get_db()
+    doctors = conn.execute("SELECT id, name, spec, email FROM users WHERE role = 'doctor'").fetchall()
+    conn.close()
+    return jsonify([dict(d) for d in doctors])
