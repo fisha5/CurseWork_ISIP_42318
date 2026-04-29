@@ -323,3 +323,10 @@ async function register(e) {
     document.getElementById('regForm').classList.add('hidden');
     document.getElementById('successMsg')?.classList.remove('hidden');
 }
+
+async function adminLogin(e) {
+    e.preventDefault();
+    const res = await API_CALL.adminLogin(document.getElementById('aEmail').value, document.getElementById('aPass').value);
+    if(!res.success) return alert('Неверные данные');
+    user = res.user; API_CALL.saveUser(user); show('adminPanel');
+}
