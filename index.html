@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регистратура</title>
-    <script src="https://cdn.tailwindcss.com"></script>/* чтобы писать стили прямо в html  */
+    <script src="https://cdn.tailwindcss.com"></script> 
     <script>tailwind.config = {darkMode:'class'}</script>
     <style>
         body{transition:background 0.3s}
@@ -196,5 +196,24 @@
             </div>
         </div>
     </section>
-
 </main>
+
+<script>
+const API = window.location.origin + '/api';
+let user = null, editId = null, currentDoctor = null, selectedTime = null;
+
+const API_CALL = {
+    login: async (e, p) => (await fetch(`${API}/login`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:e, pass:p})})).json(),
+    register: async (n, s, e, p) => (await fetch(`${API}/register`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name:n, spec:s, email:e, pass:p})})).json(),
+    adminLogin: async (e, p) => (await fetch(`${API}/admin-login`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:e, pass:p})})).json(),
+    getDoctors: async () => (await fetch(`${API}/doctors`)).json(),
+    getAppointments: async (id) => (await fetch(`${API}/appointments/${id}`)).json(),
+    createAppointment: async (d) => (await fetch(`${API}/appointments`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)})).json(),
+    updateAppointment: async (id, d) => (await fetch(`${API}/appointments/${id}`, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)})).json(),
+    deleteAppointment: async (id) => (await fetch(`${API}/appointments/${id}`, {method:'DELETE'})).json(),
+    adminGetDoctors: async () => (await fetch(`${API}/admin/doctors`)).json(),
+    adminCreateDoctor: async (d) => (await fetch(`${API}/admin/doctors`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)})).json(),
+    adminDeleteDoctor: async (id) => (await fetch(`${API}/admin/doctors/${id}`, {method:'DELETE'})).json(),
+    saveUser: (u) => localStorage.setItem('currentUser', JSON.stringify(u)),
+    getUser: () => JSON.parse(localStorage.getItem('currentUser') || 'null')
+};
