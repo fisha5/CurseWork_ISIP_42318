@@ -59,3 +59,23 @@ def init_db():
 @app.route('/favicon.ico')
 def favicon():
     return '', 204
+
+@app.route('/')
+def index():
+    """Главная страница"""
+    return render_template('index.html')
+
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    conn = get_db()
+    user = conn.execute(
+        'SELECT id, name, spec, email, role FROM users WHERE email = ? AND pass = ? AND role = "doctor"',
+        (data['email'], data['pass'])
+    ).fetchone()
+    conn.close()
+
+    if user:
+        return jsonify({'success': True, 'user': dict(user)})
+    return jsonify({'success': False, 'message': 'Неверный email или пароль'}), 401
