@@ -415,3 +415,13 @@ async function edit(id) {
     document.getElementById('btnSave').textContent = 'Сохранить';
     document.getElementById('btnSave').className = 'flex-1 bg-yellow-600 hover:bg-yellow-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]';
 }
+
+async function del(id) { if(!confirm('Удалить запись?')) return; await API_CALL.deleteAppointment(id); renderTable(); }
+
+function resetForm() {
+    editId = null;
+    document.querySelector('form[onsubmit="saveSession(event)"]').reset();
+    document.getElementById('sDate').value = document.getElementById('selDate').value;
+    document.getElementById('btnSave').textContent = 'Добавить';
+    document.getElementById('btnSave').className = 'flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]';
+}
