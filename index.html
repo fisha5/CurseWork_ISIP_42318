@@ -236,3 +236,9 @@ function toggleAuth() {
     document.getElementById('loginForm').classList.toggle('hidden');
     document.getElementById('regForm').classList.toggle('hidden');
 }
+
+function showLogin() {
+    document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('regForm').classList.add('hidden');
+    document.getElementById('successMsg')?.classList.add('hidden');
+}
