@@ -179,3 +179,22 @@ def admin_get_doctors():
     doctors = conn.execute("SELECT id, name, spec, email FROM users WHERE role = 'doctor'").fetchall()
     conn.close()
     return jsonify([dict(d) for d in doctors])
+
+@app.route('/api/admin/doctors', methods=['POST'])
+def admin_create_doctor():
+    data = request.json
+    conn = get_db()
+
+    if conn.execute('SELECT id FROM users WHERE email = ?', (data['email'],)).fetchone():
+        conn.close()
+        return jsonify({'success': False, 'message': 'Email уже занят'}), 400
+
+    c = conn.cursor()
+    c.execute(
+        'INSERT INTO users (name, spec, email, pass, role) VALUES (?, ?, ?, ?, ?)',
+        (data['name'], data['spec'], data['email'], data['pass'], 'doctor')
+    )
+    conn.commit()
+    new_id = c.lastrowid
+    conn.close()
+    return jsonify({'success': True, 'id': new_id})
