@@ -314,3 +314,12 @@ async function login(e) {
     if(!res.success) { document.getElementById('msg').textContent = res.message; document.getElementById('msg').classList.remove('hidden'); return; }
     user = res.user; API_CALL.saveUser(user); alert('Добро пожаловать!'); show('doctor');
 }
+
+async function register(e) {
+    e.preventDefault();
+    const res = await API_CALL.register(document.getElementById('rName').value, document.getElementById('rSpec').value, document.getElementById('rEmail').value, document.getElementById('rPass').value);
+    if(!res.success) { document.getElementById('msg').textContent = res.message; document.getElementById('msg').classList.remove('hidden'); return; }
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('regForm').classList.add('hidden');
+    document.getElementById('successMsg')?.classList.remove('hidden');
+}
