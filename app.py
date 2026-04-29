@@ -55,3 +55,7 @@ def init_db():
         conn.commit()
 
     conn.close()
+
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
