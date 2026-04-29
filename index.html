@@ -287,3 +287,23 @@ async function openAppointment(id) {
     renderTimeSlots();
     show('appointment');
 }
+
+function renderTimeSlots() {
+    const slots = [];
+    for(let h=8; h<15; h++) { slots.push(`${h}:00`); slots.push(`${h}:30`); }
+    document.getElementById('timeSlots').innerHTML = slots.map(t =>
+        `<button type="button" onclick="selectTime('${t}')" class="p-2 sm:p-3 text-xs sm:text-sm border rounded-lg dark:border-gray-600 min-w-[60px] sm:min-w-[70px] text-center ${selectedTime===t?'bg-blue-500 text-white border-blue-500':'hover:border-blue-500 bg-white dark:bg-gray-800'}">${t}</button>`
+    ).join('');
+}
+function selectTime(t) { selectedTime = t; renderTimeSlots(); }
+
+async function submitAppointment() {
+    const p = document.getElementById('aptPatient').value.trim();
+    const ph = document.getElementById('aptPhone').value.trim();
+    if(!p || !ph || !selectedTime) return alert('Заполните ФИО, телефон и время');
+    const res = await API_CALL.createAppointment({
+        doctorId: currentDoctor.id, date: document.getElementById('aptDate').value, time: selectedTime,
+        patient: p, phone: ph, type: 'Первичный приём', comment: document.getElementById('aptComment').value.trim()
+    });
+    if(res.success) { alert(' Запись создана!'); show('home'); } else alert('Ошибка: ' + (res.message||''));
+}
