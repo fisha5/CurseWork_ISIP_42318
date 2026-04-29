@@ -121,3 +121,13 @@ def get_doctors():
     doctors = conn.execute("SELECT id, name, spec FROM users WHERE role = 'doctor'").fetchall()
     conn.close()
     return jsonify([dict(d) for d in doctors])
+
+@app.route('/api/appointments/<int:doctor_id>', methods=['GET'])
+def get_appointments(doctor_id):
+    conn = get_db()
+    appointments = conn.execute(
+        'SELECT * FROM appointments WHERE doctor_id = ? ORDER BY date, time',
+        (doctor_id,)
+    ).fetchall()
+    conn.close()
+    return jsonify([dict(a) for a in appointments])
