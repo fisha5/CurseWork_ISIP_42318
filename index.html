@@ -130,3 +130,71 @@
             </form>
         </div>
     </section>
+        <section id="adminPanel" class="hidden space-y-4 sm:space-y-6">
+        <div class="flex gap-1 sm:gap-2 border-b dark:border-gray-700 mb-3 sm:mb-4 overflow-x-auto pb-1">
+            <button onclick="showAdminTab('schedule')" id="tabSchedule" class="px-3 sm:px-4 py-2 border-b-2 border-blue-500 text-blue-600 font-medium text-sm sm:text-base whitespace-nowrap">Расписание</button>
+            <button onclick="showAdminTab('doctors')" id="tabDoctors" class="px-3 sm:px-4 py-2 text-gray-500 text-sm sm:text-base whitespace-nowrap">Врачи</button>
+        </div>
+
+        <div id="adminSchedule" class="space-y-3 sm:space-y-4">
+            <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg">
+                <h3 class="font-bold text-lg sm:text-xl mb-3 sm:mb-4">Управление записями</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-3 sm:mb-4">
+                    <select id="selDoc" onchange="renderTable()" class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]"><option value="">Выберите врача</option></select>
+                    <select id="selDate" onchange="renderTable()" class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]"></select>
+                </div>
+                <form onsubmit="saveSession(event)" class="bg-gray-50 dark:bg-gray-700 p-3 sm:p-4 rounded-xl space-y-3 mb-4">
+                    <div class="grid grid-cols-2 gap-2 sm:gap-3">
+                        <input type="date" id="sDate" required class="col-span-2 p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                        <input type="time" id="sTime" required class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                        <input id="sPatient" placeholder="Пациент" required class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                        <select id="sType" class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                            <option>Первичный приём</option><option>Повторный приём</option><option>Консультация</option>
+                        </select>
+                    </div>
+                    <input id="sComment" placeholder="Жалобы" class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <div class="flex gap-2">
+                        <button id="btnSave" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]">Добавить</button>
+                        <button type="button" onclick="resetForm()" class="px-3 sm:px-4 border rounded-xl dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 text-sm sm:text-base min-h-[44px]">Отмена</button>
+                    </div>
+                </form>
+                <div class="overflow-x-auto -mx-4 sm:mx-0 px-4 sm:px-0">
+                    <table class="w-full text-left min-w-[450px] text-sm">
+                        <thead class="bg-gray-100 dark:bg-gray-700"><tr>
+                            <th class="p-2 sm:p-3">Время</th>
+                            <th class="p-2 sm:p-3">Пациент</th>
+                            <th class="p-2 sm:p-3 hidden md:table-cell">Жалобы</th>
+                            <th class="p-2 sm:p-3">Действия</th>
+                        </tr></thead>
+                        <tbody id="tbl" class="divide-y dark:divide-gray-700"></tbody>
+                    </table>
+                </div>
+                <p id="empty" class="text-center text-gray-400 py-4 text-sm hidden">Нет записей</p>
+            </div>
+        </div>
+
+        <div id="adminDoctors" class="hidden space-y-4">
+            <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg">
+                <h3 class="font-bold text-lg sm:text-xl mb-3 sm:mb-4">➕ Новый врач</h3>
+                <form onsubmit="adminRegisterDoctor(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <input id="adName" placeholder="ФИО *" required class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px] sm:col-span-2">
+                    <select id="adSpec" required class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                        <option value="">Специальность *</option>
+                        <option>Терапевт</option><option>Хирург</option><option>Кардиолог</option>
+                        <option>Невролог</option><option>Офтальмолог</option><option>Педиатр</option>
+                    </select>
+                    <input type="email" id="adEmail" placeholder="Email *" required class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <input type="password" id="adPass" placeholder="Пароль *" required minlength="6" class="p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px] sm:col-span-2">
+                    <div class="sm:col-span-2">
+                        <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px] w-full sm:w-auto">Зарегистрировать</button>
+                    </div>
+                </form>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-lg">
+                <h3 class="font-bold text-lg sm:text-xl mb-3 sm:mb-4"> Список врачей</h3>
+                <div id="doctorsList" class="space-y-2 sm:space-y-3"></div>
+            </div>
+        </div>
+    </section>
+
+</main>
