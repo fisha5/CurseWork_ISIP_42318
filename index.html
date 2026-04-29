@@ -425,3 +425,12 @@ function resetForm() {
     document.getElementById('btnSave').textContent = 'Добавить';
     document.getElementById('btnSave').className = 'flex-1 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]';
 }
+
+async function adminRegisterDoctor(e) {
+    e.preventDefault();
+    const res = await API_CALL.adminCreateDoctor({ name: document.getElementById('adName').value, spec: document.getElementById('adSpec').value, email: document.getElementById('adEmail').value, pass: document.getElementById('adPass').value });
+    if(!res.success) return alert('Ошибка: ' + (res.message||''));
+    alert('Врач добавлен');
+    document.getElementById('adName').value = ''; document.getElementById('adSpec').value = ''; document.getElementById('adEmail').value = ''; document.getElementById('adPass').value = '';
+    renderDoctorsList();
+}
