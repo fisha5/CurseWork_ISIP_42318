@@ -330,3 +330,24 @@ async function adminLogin(e) {
     if(!res.success) return alert('Неверные данные');
     user = res.user; API_CALL.saveUser(user); show('adminPanel');
 }
+
+function logout() { user = null; localStorage.removeItem('currentUser'); show('home'); }
+
+async function renderDoc() {
+    document.getElementById('docName').textContent = user.name;
+    document.getElementById('docSpec').textContent = user.spec;
+    const today = new Date().toISOString().split('T')[0];
+    const list = await API_CALL.getAppointments(user.id);
+    document.getElementById('docCount').textContent = list.filter(a=>a.date===today).length;
+
+    if(!list.length) { document.getElementById('docEmpty').classList.remove('hidden'); document.getElementById('docList').innerHTML = ''; return; }
+    document.getElementById('docEmpty').classList.add('hidden');
+    document.getElementById('docList').innerHTML = list.map(a => `
+        <div class="p-3 sm:p-4 bg-white dark:bg-gray-700 rounded-xl border dark:border-gray-600 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <div class="flex items-center gap-3">
+                <div class="text-center min-w-[50px]"><p class="font-bold text-blue-600 text-sm sm:text-base">${a.time}</p><p class="text-[10px] sm:text-xs text-gray-500">${a.date===today?'Сегодня':a.date}</p></div>
+                <div class="min-w-0"><p class="font-semibold text-sm sm:text-base truncate">${a.patient_name}</p><p class="text-xs text-gray-500">${a.type}</p>${a.comment?`<p class="text-[10px] sm:text-xs text-yellow-600 mt-0.5">⚠️ ${a.comment}</p>`:''}</div>
+            </div>
+        </div>
+    `).join('');
+}
