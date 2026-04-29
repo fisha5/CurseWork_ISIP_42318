@@ -114,3 +114,10 @@ def admin_login():
     if user:
         return jsonify({'success': True, 'user': dict(user)})
     return jsonify({'success': False, 'message': 'Доступ запрещён'}), 403
+
+@app.route('/api/doctors', methods=['GET'])
+def get_doctors():
+    conn = get_db()
+    doctors = conn.execute("SELECT id, name, spec FROM users WHERE role = 'doctor'").fetchall()
+    conn.close()
+    return jsonify([dict(d) for d in doctors])
