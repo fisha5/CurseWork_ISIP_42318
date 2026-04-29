@@ -164,3 +164,12 @@ def update_appointment(id):
     conn.commit()
     conn.close()
     return jsonify({'success': True})
+
+@app.route('/api/appointments/<int:id>', methods=['DELETE'])
+def delete_appointment(id):
+    conn = get_db()
+    conn.execute('DELETE FROM appointments WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
+
