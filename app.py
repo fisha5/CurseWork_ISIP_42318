@@ -79,3 +79,24 @@ def login():
     if user:
         return jsonify({'success': True, 'user': dict(user)})
     return jsonify({'success': False, 'message': 'Неверный email или пароль'}), 401
+
+@app.route('/api/register', methods=['POST'])
+def register():
+    data = request.json
+    conn = get_db()
+
+    if conn.execute('SELECT id FROM users WHERE email = ?', (data['email'],)).fetchone():
+        conn.close()
+        return jsonify({'success': False, 'message': 'Email уже занят'}), 400
+
+    c = conn.cursor()
+    c.execute(
+        'INSERT INTO users (name, spec, email, pass, role) VALUES (?, ?, ?, ?, ?)',
+        (data['name'], data['spec'], data['email'], data['pass'], 'doctor')
+    )
+    conn.commit()
+    new_id = c.lastrowid
+    conn.close()
+
+    return jsonify(
+        {'success': True, 'user': {'id': new_id, 'name': data['name'], 'spec': data['spec'], 'role': 'doctor'}})
