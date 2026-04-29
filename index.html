@@ -434,3 +434,13 @@ async function adminRegisterDoctor(e) {
     document.getElementById('adName').value = ''; document.getElementById('adSpec').value = ''; document.getElementById('adEmail').value = ''; document.getElementById('adPass').value = '';
     renderDoctorsList();
 }
+
+async function renderDoctorsList() {
+    const docs = await API_CALL.adminGetDoctors();
+    document.getElementById('doctorsList').innerHTML = docs.map(d=>`
+        <div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <div class="min-w-0"><p class="font-bold text-sm sm:text-base truncate">${d.name}</p><p class="text-xs text-gray-500 truncate">${d.spec} | ${d.email}</p></div>
+            <button onclick="deleteDoctor(${d.id})" class="text-red-500 text-xs sm:text-sm self-start sm:self-auto">🗑️ Удалить</button>
+        </div>
+    `).join('');
+}
