@@ -153,3 +153,14 @@ def create_appointment():
     new_id = c.lastrowid
     conn.close()
     return jsonify({'success': True, 'id': new_id})
+
+@app.route('/api/appointments/<int:id>', methods=['PUT'])
+def update_appointment(id):
+    data = request.json
+    conn = get_db()
+    conn.execute('''
+        UPDATE appointments SET date=?, time=?, patient_name=?, type=?, comment=? WHERE id=?
+    ''', (data['date'], data['time'], data['patient'], data.get('type'), data.get('comment'), id))
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
