@@ -307,3 +307,10 @@ async function submitAppointment() {
     });
     if(res.success) { alert(' Запись создана!'); show('home'); } else alert('Ошибка: ' + (res.message||''));
 }
+
+async function login(e) {
+    e.preventDefault();
+    const res = await API_CALL.login(document.getElementById('e').value, document.getElementById('p').value);
+    if(!res.success) { document.getElementById('msg').textContent = res.message; document.getElementById('msg').classList.remove('hidden'); return; }
+    user = res.user; API_CALL.saveUser(user); alert('Добро пожаловать!'); show('doctor');
+}
