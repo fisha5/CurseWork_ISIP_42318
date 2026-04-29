@@ -444,3 +444,9 @@ async function renderDoctorsList() {
         </div>
     `).join('');
 }
+
+async function deleteDoctor(id) {
+    if(!confirm('Удалить врача?')) return;
+    await API_CALL.adminDeleteDoctor(id);
+    renderDoctorsList(); initAdmin();
+}
