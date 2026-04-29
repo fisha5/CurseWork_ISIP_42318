@@ -100,3 +100,17 @@ def register():
 
     return jsonify(
         {'success': True, 'user': {'id': new_id, 'name': data['name'], 'spec': data['spec'], 'role': 'doctor'}})
+
+@app.route('/api/admin-login', methods=['POST'])
+def admin_login():
+    data = request.json
+    conn = get_db()
+    user = conn.execute(
+        'SELECT id, name, role FROM users WHERE email = ? AND pass = ? AND role = "admin"',
+        (data['email'], data['pass'])
+    ).fetchone()
+    conn.close()
+
+    if user:
+        return jsonify({'success': True, 'user': dict(user)})
+    return jsonify({'success': False, 'message': 'Доступ запрещён'}), 403
