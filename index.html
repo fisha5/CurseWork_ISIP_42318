@@ -351,3 +351,17 @@ async function renderDoc() {
         </div>
     `).join('');
 }
+
+function showAdminTab(tab) {
+    document.getElementById('adminSchedule').classList.toggle('hidden', tab!=='schedule');
+    document.getElementById('adminDoctors').classList.toggle('hidden', tab!=='doctors');
+    document.getElementById('tabSchedule').className = tab==='schedule' ? 'px-3 sm:px-4 py-2 border-b-2 border-blue-500 text-blue-600 font-medium text-sm sm:text-base whitespace-nowrap' : 'px-3 sm:px-4 py-2 text-gray-500 text-sm sm:text-base whitespace-nowrap';
+    document.getElementById('tabDoctors').className = tab==='doctors' ? 'px-3 sm:px-4 py-2 border-b-2 border-blue-500 text-blue-600 font-medium text-sm sm:text-base whitespace-nowrap' : 'px-3 sm:px-4 py-2 text-gray-500 text-sm sm:text-base whitespace-nowrap';
+    if(tab==='doctors') renderDoctorsList();
+}
+
+function getDates() {
+    let h = '';
+    for(let i=0; i<30; i++) { const d = new Date(); d.setDate(d.getDate()+i); h += `<option value="${d.toISOString().split('T')[0]}">${d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</option>`; }
+    return h;
+}
