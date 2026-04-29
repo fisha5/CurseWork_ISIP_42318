@@ -217,3 +217,17 @@ const API_CALL = {
     saveUser: (u) => localStorage.setItem('currentUser', JSON.stringify(u)),
     getUser: () => JSON.parse(localStorage.getItem('currentUser') || 'null')
 };
+
+function show(id) {
+    document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(id)?.classList.remove('hidden');
+    const logged = ['doctor','adminPanel'].includes(id);
+    document.getElementById('nav').classList.toggle('hidden', logged);
+    document.getElementById('userNav').classList.toggle('hidden', !logged);
+    document.getElementById('userNav').classList.toggle('flex', logged);
+    if(logged && user) document.getElementById('uName').textContent = user.name.split(' ')[0];
+    if(id === 'home') renderDoctors();
+    if(id === 'doctor' && user) renderDoc();
+    if(id === 'adminPanel') initAdmin();
+    window.scrollTo({top:0, behavior:'smooth'});
+}
