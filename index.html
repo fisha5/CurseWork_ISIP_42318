@@ -66,3 +66,38 @@
             <button onclick="submitAppointment()" class="w-full bg-green-600 hover:bg-green-700 active:bg-green-800 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px] transition">Записаться</button>
         </div>
     </section>
+    
+    <section id="auth" class="hidden max-w-md mx-auto">
+        <div class="bg-white dark:bg-gray-800 p-4 sm:p-8 rounded-2xl shadow-lg">
+            <div id="loginForm">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Вход для врачей</h2>
+                <form onsubmit="login(event)" class="space-y-3 sm:space-y-4">
+                    <input type="email" id="e" placeholder="Email" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <input type="password" id="p" placeholder="Пароль" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]">Войти</button>
+                </form>
+                <p class="text-center mt-4 text-xs sm:text-sm">Нет аккаунта? <a href="#" onclick="toggleAuth()" class="text-blue-500 font-bold">Регистрация</a></p>
+                <p id="msg" class="text-red-500 text-center text-xs sm:text-sm mt-2 hidden bg-red-50 dark:bg-red-900/20 py-1 rounded"></p>
+            </div>
+            <div id="regForm" class="hidden">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Регистрация</h2>
+                <form onsubmit="register(event)" class="space-y-3 sm:space-y-4">
+                    <input id="rName" placeholder="ФИО" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <select id="rSpec" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                        <option value="">Специальность</option>
+                        <option>Терапевт</option><option>Хирург</option><option>Кардиолог</option>
+                        <option>Невролог</option><option>Офтальмолог</option><option>Педиатр</option>
+                    </select>
+                    <input type="email" id="rEmail" placeholder="Email" required class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <input type="password" id="rPass" placeholder="Пароль" required minlength="6" class="w-full p-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 text-sm sm:text-base min-h-[44px]">
+                    <button class="w-full bg-green-600 hover:bg-green-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]">Зарегистрироваться</button>
+                </form>
+                <p class="text-center mt-4 text-xs sm:text-sm">Есть аккаунт? <a href="#" onclick="toggleAuth()" class="text-blue-500 font-bold">Войти</a></p>
+            </div>
+            <div id="successMsg" class="hidden text-center py-4">
+                <div class="text-4xl sm:text-5xl mb-3 sm:mb-4">✅</div>
+                <h3 class="text-lg sm:text-xl font-bold mb-2">Успешно!</h3>
+                <button onclick="showLogin()" class="mt-3 sm:mt-4 text-blue-500 font-bold text-sm sm:text-base">Войти</button>
+            </div>
+        </div>
+    </section>
