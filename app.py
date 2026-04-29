@@ -207,3 +207,8 @@ def admin_delete_doctor(id):
     conn.commit()
     conn.close()
     return jsonify({'success': True})
+
+if __name__ == '__main__':
+    init_db()
+
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
