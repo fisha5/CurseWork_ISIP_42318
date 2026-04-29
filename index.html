@@ -365,3 +365,12 @@ function getDates() {
     for(let i=0; i<30; i++) { const d = new Date(); d.setDate(d.getDate()+i); h += `<option value="${d.toISOString().split('T')[0]}">${d.toLocaleDateString('ru-RU',{day:'numeric',month:'short'})}</option>`; }
     return h;
 }
+
+async function initAdmin() {
+    document.getElementById('selDate').innerHTML = getDates();
+    document.getElementById('sDate').innerHTML = getDates();
+    document.getElementById('sDate').value = new Date().toISOString().split('T')[0];
+    const docs = await API_CALL.adminGetDoctors();
+    document.getElementById('selDoc').innerHTML = '<option value="">Выберите врача</option>' + docs.map(d=>`<option value="${d.id}">${d.name} (${d.spec})</option>`).join('');
+    renderTable();
+}
