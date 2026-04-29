@@ -272,3 +272,18 @@ async function renderDoctors() {
         </div>
     `).join('');
 }
+
+async function openAppointment(id) {
+    const docs = await API_CALL.getDoctors();
+    currentDoctor = docs.find(d => d.id === id);
+    if(!currentDoctor) return alert('Врач не найден');
+    document.getElementById('aptDocName').textContent = currentDoctor.name;
+    document.getElementById('aptDocSpec').textContent = currentDoctor.spec;
+    document.getElementById('aptDate').min = new Date().toISOString().split('T')[0];
+    document.getElementById('aptDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('aptPatient').value = '';
+    document.getElementById('aptPhone').value = '';
+    document.getElementById('aptComment').value = '';
+    renderTimeSlots();
+    show('appointment');
+}
