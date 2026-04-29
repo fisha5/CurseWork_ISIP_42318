@@ -131,3 +131,25 @@ def get_appointments(doctor_id):
     ).fetchall()
     conn.close()
     return jsonify([dict(a) for a in appointments])
+
+@app.route('/api/appointments', methods=['POST'])
+def create_appointment():
+    data = request.json
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO appointments (doctor_id, patient_name, patient_phone, date, time, type, comment)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    ''', (
+        data['doctorId'],
+        data['patient'],
+        data.get('phone', ''),
+        data['date'],
+        data['time'],
+        data.get('type', 'Первичный приём'),
+        data.get('comment', '')
+    ))
+    conn.commit()
+    new_id = c.lastrowid
+    conn.close()
+    return jsonify({'success': True, 'id': new_id})
