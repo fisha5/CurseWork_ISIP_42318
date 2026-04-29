@@ -401,3 +401,17 @@ async function saveSession(e) {
     document.getElementById('selDate').value = data.date;
     resetForm(); renderTable();
 }
+
+async function edit(id) {
+    const did = parseInt(document.getElementById('selDoc').value);
+    const s = (await API_CALL.getAppointments(did)).find(x=>x.id===id);
+    if(!s) return;
+    editId = id;
+    document.getElementById('sDate').value = s.date;
+    document.getElementById('sTime').value = s.time;
+    document.getElementById('sPatient').value = s.patient_name;
+    document.getElementById('sType').value = s.type;
+    document.getElementById('sComment').value = s.comment || '';
+    document.getElementById('btnSave').textContent = 'Сохранить';
+    document.getElementById('btnSave').className = 'flex-1 bg-yellow-600 hover:bg-yellow-700 text-white p-3 rounded-xl font-bold text-sm sm:text-base min-h-[44px]';
+}
