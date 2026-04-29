@@ -242,3 +242,33 @@ function showLogin() {
     document.getElementById('regForm').classList.add('hidden');
     document.getElementById('successMsg')?.classList.add('hidden');
 }
+
+function toggleDark() {
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('dark', document.documentElement.classList.contains('dark'));
+}
+
+if(localStorage.getItem('dark')==='true') document.documentElement.classList.add('dark');
+
+async function renderDoctors() {
+    const search = document.getElementById('searchDoc')?.value.toLowerCase() || '';
+    const spec = document.getElementById('filterSpec')?.value || '';
+    const docs = await API_CALL.getDoctors();
+    const filtered = docs.filter(d => (d.name.toLowerCase().includes(search) || d.spec.toLowerCase().includes(search)) && (!spec || d.spec === spec));
+
+    document.getElementById('doctorsGrid').innerHTML = filtered.map(d => `
+        <div onclick="openAppointment(${d.id})" class="bg-white dark:bg-gray-800 p-4 sm:p-5 rounded-2xl shadow-lg cursor-pointer hover:shadow-xl transition active:scale-[0.98]">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 rounded-xl flex items-center justify-center text-lg sm:text-xl text-white flex-shrink-0">👨‍⚕️</div>
+                <div class="min-w-0">
+                    <h3 class="font-bold text-sm sm:text-base truncate">${d.name}</h3>
+                    <span class="text-xs sm:text-sm text-blue-600">${d.spec}</span>
+                </div>
+            </div>
+            <div class="text-xs sm:text-sm text-gray-500 flex justify-between items-center">
+                <span> 8:00 - 15:00</span>
+                <span class="text-blue-500 font-medium">Записаться →</span>
+            </div>
+        </div>
+    `).join('');
+}
