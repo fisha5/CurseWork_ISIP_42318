@@ -7,3 +7,9 @@ app = Flask(__name__, template_folder='templates')
 CORS(app)
 
 DB_NAME = 'database.db'
+
+def get_db():
+    """Возвращает соединение с базой данных"""
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row  # Возвращает строки как словари
+    return conn
