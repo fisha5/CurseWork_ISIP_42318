@@ -374,3 +374,19 @@ async function initAdmin() {
     document.getElementById('selDoc').innerHTML = '<option value="">Выберите врача</option>' + docs.map(d=>`<option value="${d.id}">${d.name} (${d.spec})</option>`).join('');
     renderTable();
 }
+
+async function renderTable() {
+    const did = parseInt(document.getElementById('selDoc').value);
+    const dt = document.getElementById('selDate').value;
+    if(!did || !dt) { document.getElementById('tbl').innerHTML = ''; return; }
+    const rows = (await API_CALL.getAppointments(did)).filter(a=>a.date===dt).sort((a,b)=>a.time.localeCompare(b.time));
+    document.getElementById('empty').classList.toggle('hidden', rows.length>0);
+    document.getElementById('tbl').innerHTML = rows.map(a=>`
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+            <td class="p-2 sm:p-3 font-bold text-blue-600 text-xs sm:text-sm">${a.time}</td>
+            <td class="p-2 sm:p-3 text-xs sm:text-sm">${a.patient_name}<br><small class="text-gray-400">${a.patient_phone||''}</small></td>
+            <td class="p-2 sm:p-3 text-xs text-gray-500 hidden md:table-cell">${a.comment||'—'}</td>
+            <td class="p-2 sm:p-3"><button onclick="edit(${a.id})" class="text-blue-500 mr-2 sm:mr-3 text-xs sm:text-sm">✏️</button><button onclick="del(${a.id})" class="text-red-500 text-xs sm:text-sm">🗑️</button></td>
+        </tr>
+    `).join('');
+}
