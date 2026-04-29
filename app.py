@@ -198,3 +198,12 @@ def admin_create_doctor():
     new_id = c.lastrowid
     conn.close()
     return jsonify({'success': True, 'id': new_id})
+
+@app.route('/api/admin/doctors/<int:id>', methods=['DELETE'])
+def admin_delete_doctor(id):
+    conn = get_db()
+    conn.execute('DELETE FROM appointments WHERE doctor_id = ?', (id,))  # Сначала записи
+    conn.execute('DELETE FROM users WHERE id = ?', (id,))  # Потом врача
+    conn.commit()
+    conn.close()
+    return jsonify({'success': True})
