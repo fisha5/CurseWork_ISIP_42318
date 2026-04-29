@@ -231,3 +231,8 @@ function show(id) {
     if(id === 'adminPanel') initAdmin();
     window.scrollTo({top:0, behavior:'smooth'});
 }
+
+function toggleAuth() {
+    document.getElementById('loginForm').classList.toggle('hidden');
+    document.getElementById('regForm').classList.toggle('hidden');
+}
