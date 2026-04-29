@@ -450,3 +450,9 @@ async function deleteDoctor(id) {
     await API_CALL.adminDeleteDoctor(id);
     renderDoctorsList(); initAdmin();
 }
+
+const saved = API_CALL.getUser();
+if(saved) { user = saved; show(user.role==='admin'?'adminPanel':'doctor'); } else show('home');
+</script>
+</body>
+</html>
